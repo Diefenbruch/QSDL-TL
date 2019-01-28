@@ -484,7 +484,7 @@ $(YOUTPUT): $(YFILES)
 	@echo Yaccing $< ...
 	$(YACC) $(YACCFLAGS) $< 2>> $(LOGFILE)
 
-$(OBJDIR)/%.o : %.cpp
+$(OBJDIR)/%.o : %.cpp $(OBJDIR)
 	echo Compiling $< ...
 	$(C++) -c $(CFLAGS) $(INCLUDES) -o $@  $< 2>>$(LOGFILE)
 
