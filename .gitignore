@@ -1,0 +1,6 @@
+# ignore the following files and directories
+obj
+RCS*
+.depend*
+qsdl*.log
+
