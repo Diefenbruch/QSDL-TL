@@ -1,0 +1,17 @@
+In file included from TLFormulaSet.cpp:19:0:
+TLFormulaSet.inl.h: In member function 'TLFormula* TLFormulaSet::ExtractAtomic()':
+TLFormulaSet.inl.h:492:14: warning: variable 'tmpPhi' set but not used [-Wunused-but-set-variable]
+   TLFormula* tmpPhi;
+              ^~~~~~
+lex.yy.c: In function 'int yy_get_next_buffer()':
+lex.yy.c:619:18: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   for ( n = 0; n < max_size && \
+                   
+lex.yy.c:1162:3: note: in expansion of macro 'YY_INPUT'
+   YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
+   ^~~~~~~~
+lex.yy.c: At global scope:
+lex.yy.c:1263:17: warning: 'void yyunput(int, char*)' defined but not used [-Wunused-function]
+     static void yyunput (int c, char * yy_bp )
+                 ^~~~~~~
+ar: creating obj/arm-linux/libTL.a

@@ -321,7 +321,7 @@ TMPSRCS =\
   $(LOUTPUT)
 
 SRCS = \
-    TLDebug.cpp \
+	TLDebug.cpp \
 	TLFormula.cpp \
 	TLFormulaALWAYS.cpp \
 	TLFormulaAND.cpp \
@@ -389,7 +389,7 @@ TEMPLATES = \
     TLStack.tmpl.h
 
 HDRS = \
-    TLStack.h \
+	TLStack.h \
 	TL.h \
 	TLBuechi.h \
 	TLBuechiHelp.h \
@@ -517,6 +517,16 @@ $(PSDIR):
 		echo Creating $(PSDIR) ...; \
 		$(MKDIR) $(PSDIR); fi
 
+$(INCDIR): 
+	@if [ ! \( -d $(INCDIR) \) ]; then \
+		echo Creating $(INCDIR) ...; \
+		$(MKDIR) $(INCDIR); fi
+
+$(INCDIR)/TL: $(INCDIR)
+	@if [ ! \( -d $(INCDIR)/TL \) ]; then \
+		echo Creating $(INCDIR)/TL ...; \
+		$(MKDIR) $(INCDIR)/TL; fi
+
 $(DEPFILE):
 	$(TOUCH) $(DEPFILE)
 
@@ -530,7 +540,7 @@ install-lib: $(OUTPUT) $(LIBDIR)
 	echo Installing new library in $(LIBDIR) ...
 	$(CP)  $(OUTPUT) $(LIBDIR)
 
-install-includes: $(HEADERS) $(INSTALL_INLINES)
+install-includes: $(HEADERS) $(INSTALL_INLINES) $(INCDIR)/TL
 	echo Deleting old include files from $(INCDIR)/TL ...
 	-$(RM) $(INCDIR)/TL/*.h
 	echo Installing new include files in $(INCDIR)/TL ...
