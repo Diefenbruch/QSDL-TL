@@ -443,6 +443,7 @@ PSFILES	= $(HEADERS:.h=.ps)
 # 7. Makefileregeln: #
 ######################
 
+default: clean-rubbish $(OBJDIR) $(OUTPUT)
 
 lib: clean-rubbish $(OUTPUT)
 
@@ -484,11 +485,11 @@ $(YOUTPUT): $(YFILES)
 	@echo Yaccing $< ...
 	$(YACC) $(YACCFLAGS) $< 2>> $(LOGFILE)
 
-$(OBJDIR)/%.o : %.cpp $(OBJDIR)
+$(OBJDIR)/%.o : %.cpp
 	echo Compiling $< ...
 	$(C++) -c $(CFLAGS) $(INCLUDES) -o $@  $< 2>>$(LOGFILE)
 
-$(OBJDIR)/%.o: %.c 
+$(OBJDIR)/%.o: %.c
 	@echo Compiling $< ...
 	$(C++) -c $(CFLAGS) $(TFLAGS) $(PFLAGS) $(DEFINES) $(INCLUDES) $< -o $@ 2>> $(LOGFILE)
 
