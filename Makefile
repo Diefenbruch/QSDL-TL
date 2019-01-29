@@ -449,6 +449,8 @@ lib: clean-rubbish $(OUTPUT)
 
 all: clean-rubbish $(OUTPUT) test
 
+$(OBJS): $(OBJDIR)
+
 $(OUTPUT): $(OBJS)
 	echo Constructing $(OUTPUT) ...
 	$(AR) $(ARFLAGS) $(OUTPUT) $(OBJS) \
