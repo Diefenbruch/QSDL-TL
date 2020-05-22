@@ -440,17 +440,19 @@ OBJS = $(addprefix $(OBJDIR)/, $(SOURCES:.cpp=.o)) $(TMP_OBJS)
 TEST_OBJS = $(addprefix $(OBJDIR)/, $(TEST_SRCS:.cpp=.o))
 PSFILES	= $(HEADERS:.h=.ps)
 
-######################
-# 7. Makefileregeln: #
-######################
+##################################################
+# 7. Makefileregeln:                             #
+#    Abhängigkeiten hinter dem | Symbol sind     #
+#    logische aber keine Zeit-Abhängigkeiten!    #
+##################################################
 
-default: clean-rubbish $(OBJDIR) $(OUTPUT)
+default: clean-rubbish $(OUTPUT) | $(OBJDIR)
 
 lib: clean-rubbish $(OUTPUT)
 
 all: clean-rubbish $(OUTPUT) test
 
-$(OBJS): $(OBJDIR)
+$(OBJS): | $(OBJDIR)
 
 $(OUTPUT): $(OBJS)
 	echo Constructing $(OUTPUT) ...
@@ -501,7 +503,7 @@ $(OBJBASEDIR):
     echo Creating $(OBJBASEDIR) ...; \
     $(MKDIR) $(OBJBASEDIR); fi
 
-$(OBJDIR): $(OBJBASEDIR)
+$(OBJDIR): | $(OBJBASEDIR)
 	if [ ! \( -d $(OBJDIR) \) ]; then \
 		echo Creating $(OBJDIR) ...; \
 		$(MKDIR) $(OBJDIR); fi
@@ -521,12 +523,12 @@ $(PSDIR):
 		echo Creating $(PSDIR) ...; \
 		$(MKDIR) $(PSDIR); fi
 
-$(INCDIR): 
+$(INCDIR):
 	@if [ ! \( -d $(INCDIR) \) ]; then \
 		echo Creating $(INCDIR) ...; \
 		$(MKDIR) $(INCDIR); fi
 
-$(INCDIR)/TL: $(INCDIR)
+$(INCDIR)/TL: | $(INCDIR)
 	@if [ ! \( -d $(INCDIR)/TL \) ]; then \
 		echo Creating $(INCDIR)/TL ...; \
 		$(MKDIR) $(INCDIR)/TL; fi
@@ -538,13 +540,13 @@ $(DEPFILE):
 	echo Generating   $(PSDIR)/$(notdir $@) form $< ...
 	$(MAKE_PS) $(MAKE_PS_FLAGS) $(PSDIR)/$(notdir $@) $<
 
-install-lib: $(OUTPUT) $(LIBDIR)
+install-lib: $(OUTPUT) | $(LIBDIR)
 	echo Deleting old library from $(LIBDIR) ...
 	-$(RM) $(LIBDIR)/$(OUTPUT)
 	echo Installing new library in $(LIBDIR) ...
 	$(CP)  $(OUTPUT) $(LIBDIR)
 
-install-includes: $(HEADERS) $(INSTALL_INLINES) $(INCDIR)/TL
+install-includes: $(HEADERS) $(INSTALL_INLINES) | $(INCDIR)/TL
 	echo Deleting old include files from $(INCDIR)/TL ...
 	-$(RM) $(INCDIR)/TL/*.h
 	echo Installing new include files in $(INCDIR)/TL ...
@@ -569,9 +571,9 @@ git-commit:
 
 git-push:
 	@echo Pushing sources to github...
-	$(GIT) push 
+	$(GIT) push
 
-postscript: $(PSDIR) $(PSFILES)
+postscript: $(PSFILES) | $(PSDIR)
 
 print: postscript
 	for X in $(PSFILES); do \
@@ -585,7 +587,7 @@ backup: $(SOURCES) $(HEADERS) $(INLINES) $(YFILES) $(LFILES) $(TEST_SRCS)
 	$(COMPRESS) $(BACKUP).$(TAR_SUFFIX)
 	-$(MV) $(BACKUP).$(TAR_SUFFIX).$(COMPRESS_SUFFIX) $(BACKUP).taz
 
-veryclean: clean clean-rcs 
+veryclean: clean clean-rcs
 	-$(RM) $(TMPSRCS) $(TMPHEADERS) $(PSDIR)/*.$(PS_SUFFIX) *.$(PS_SUFFIX) *.$(TAR_SUFFIX) *.$(COMPRESS_SUFFIX) *.taz *tags 2!
 
 clean: clean-rubbish
